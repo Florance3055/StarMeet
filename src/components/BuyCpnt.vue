@@ -25,7 +25,7 @@
             <el-card shadow="always">
               <h2>
                 费用：
-                <span>¥{{money}}</span>
+                <span>¥{{bussinessInfo.money}}</span>
               </h2>
               <!-- 绑定open事件打开对话框确认购买 -->
               <el-button type="primary" id="buy_btn" @click="open">立即购买</el-button>
@@ -41,21 +41,90 @@
 export default {
   data() {
     return {
-      money: "1562,000,000", //页面初始加载时第一个星球的价钱
+      bussinessInfo: { money: 156000000, certification: 1 },
+      // money: "156000000", //页面初始加载时第一个星球的价钱
+      // certification: 1,
       imgs: [
         //星球图片地址和价钱
-        { url: require("../assets/images/xq5.png"), price: "1562,000,000" },
-        { url: require("../assets/images/xq6.png"), price: "2356,000,000" },
-        { url: require("../assets/images/xq7.png"), price: "3256,000,000" },
-        { url: require("../assets/images/xq8.png"), price: "4996,000,000" }
+        {
+          url: require("../assets/images/xq5.png"),
+          price: 156000000
+        },
+        {
+          url: require("../assets/images/xq6.png"),
+          price: 235000000
+        },
+        {
+          url: require("../assets/images/xq7.png"),
+          price: 325000000
+        },
+        {
+          url: require("../assets/images/xq8.png"),
+          price: 499000000
+        }
       ]
     };
   },
   methods: {
-    open() {
+    changeMoney() {
       //element-ui封装的MessageBox组件
+
+      this.$http({
+        method: "post",
+        url: "/api/bussiness/money",
+        withCredentials: true,
+        data: this.bussinessInfo
+      })
+        .then(res => {
+          if (res.data.code == 200) {
+            this.$message({
+              type: "success",
+              message: "购买成功!"
+            });
+            this.changeCertification();
+          } else if (res.data.code == 211) {
+            this.$message({
+              type: "error",
+              message: "购买失败,余额不足!"
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: "购买失败!"
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    changeCertification() {
+      this.$http({
+        method: "post",
+        url: "/api/bussiness/certification",
+        withCredentials: true,
+        data: this.bussinessInfo
+      })
+        .then(res => {
+          if (res.data.code == 200) {
+            this.$message({
+              type: "success",
+              message: "成功获取权限!"
+            });
+            setTimeout(function() {
+              window.location.href = "/server";
+            }, 2000);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    open() {
       this.$confirm(
-        "您将花费¥" + this.money + "  购买这颗星球, 是否继续?",
+        "您将花费¥" + this.bussinessInfo.money + "  购买这颗星球, 是否继续?",
         "提示",
         {
           confirmButtonText: "确定",
@@ -64,13 +133,7 @@ export default {
         }
       )
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "购买成功!"
-          });
-          setTimeout(function() {
-            window.location.href = "/server";
-          }, 1000);
+          this.changeMoney();
         })
         .catch(() => {
           this.$message({
@@ -79,10 +142,11 @@ export default {
           });
         });
     },
+
     linkTo() {
       //点击图片时，对该图片的价格进行数值绑定，异步操作直接响应前端
       let activeIndex = this.$refs.carousel.activeIndex;
-      this.money = this.imgs[activeIndex].price;
+      this.bussinessInfo.money = this.imgs[activeIndex].price;
     }
   }
 };

@@ -18,6 +18,8 @@
           <el-menu-item index="info">信息</el-menu-item>
           <el-menu-item index="buy">惠取</el-menu-item>
           <el-menu-item index="server">服务</el-menu-item>
+          <el-menu-item index="login">用户</el-menu-item>
+          <el-menu-item index="comment">评论</el-menu-item>
         </el-menu>
       </el-header>
       <!--路由的坑(路由的所有子组件组件都在这个标签中显示)-->
@@ -58,6 +60,10 @@ export default {
       this.activeIndex = "buy";
     } else if (this.$route.path === "/server") {
       this.activeIndex = "server";
+    } else if (this.$route.path === "/login") {
+      this.activeIndex = "login";
+    } else if (this.$route.path === "/comment") {
+      this.activeIndex = "comment";
     } else if (this.$route.path === "/") {
       this.activeIndex = "/";
     }
@@ -99,7 +105,7 @@ export default {
 
 <style>
 /*初始化CSS*/
-@import "./css/init.css";
+@import "./init.css";
 
 #app {
   /*element-ui中的字体适配规范*/

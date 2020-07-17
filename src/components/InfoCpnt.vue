@@ -430,10 +430,10 @@ img {
   transition: all 0.3s ease-in-out;
 }
 
-.left_border:hover::after {
+/* .left_border:hover::after {
   height: 100%;
   opacity: 1;
-}
+} */
 
 /* 卡片底部边框的hover效果 */
 .bottom_border {
