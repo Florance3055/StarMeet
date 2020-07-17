@@ -83,3 +83,34 @@
         1. 未适配移动端，请勿用PC端Google浏览器以外的设备软件打开StarMeet
 	    2.项目已编译至dist文件夹，开启web服务器即可浏览
 	    3.若无法浏览网页，可行至本人部署到服务器的网页地址：http://sm.2key.top
+
+```
+starmeet_vue
+├─ .gitignore
+├─ babel.config.js
+├─ package-lock.json
+├─ package.json
+├─ public
+│  ├─ favicon.ico
+│  └─ index.html
+├─ README.md
+├─ src
+│  ├─ App.vue
+│  ├─ assets
+│  │  └─ images
+│  ├─ components
+│  │  ├─ BuyCpnt.vue
+│  │  ├─ CommentCpnt.vue
+│  │  ├─ IndexCpnt.vue
+│  │  ├─ InfoCpnt.vue
+│  │  ├─ IntroCpnt.vue
+│  │  ├─ LoginCpnt.vue
+│  │  └─ ServerCpnt.vue
+│  ├─ element.js
+│  ├─ init.css
+│  ├─ main.js
+│  ├─ router.js
+│  └─ store.js
+└─ vue.config.js
+
+```
