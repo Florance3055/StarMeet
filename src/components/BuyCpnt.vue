@@ -10,7 +10,7 @@
         arrow="never"
         trigger="click"
         indicator-position="none"
-        @click.native="linkTo"
+        @click.enter="linkTo"
       >
         <!-- 使用Vue的v-for循环加载数组中的每一个星球的图片地址和价钱 -->
         <el-carousel-item v-for="item in imgs" v-bind:key="item.price">

@@ -1,7 +1,7 @@
 /*注释掉的是不导入Vue的element-ui组件，用于减少打包体积，加快加载速度*/
 /*如需使用某组件，只需要解除注释，即可全局引用此组件*/
 
-import Vue from 'vue'
+import  Vue from 'vue'
 import {
     // Pagination,
     // Dialog,

@@ -62,7 +62,7 @@ export default {
       this.activeIndex = "/";
     }
   },
-  destroyed() {
+  unmounted() {
     window.removeEventListener("scroll", this.scrollToTop); //销毁监听window的滚动条
   },
   methods: {

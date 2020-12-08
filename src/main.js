@@ -1,5 +1,5 @@
 /*导入Vue App父组件 路由 axios qs 部分element-ui组件 */
-import Vue from 'vue'
+import  Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
