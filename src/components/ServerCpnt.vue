@@ -13,7 +13,7 @@
       </el-tooltip>
 
       <!-- 右下角反馈信息 -->
-      <el-button @click="openWindow" id="feedback">反馈</el-button>
+      <el-button @click="openWindow" id="feedback">评论</el-button>
     </div>
   </div>
 </template>
@@ -22,11 +22,14 @@
 export default {
   data() {
     return {
+      isLogin: false,
       params: {
-        name: "",
-        info: "" //要ajax 的信息
+        userComment: ""
       }
     };
+  },
+  created: function() {
+    this.getBussinessInfo();
   },
   methods: {
     changeColor() {
@@ -34,8 +37,53 @@ export default {
       this.$refs.my_star.style.cssText = "filter:  hue-rotate(" + deg + "deg) "; //根据ref属性绑定用CSS滤镜修改星球的色彩
     },
 
+    getBussinessInfo() {
+      this.$http({
+        method: "get",
+        url: "/api/bussiness/info",
+        withCredentials: true
+      })
+        .then(res => {
+          if (res.data.code == 200) {
+            this.isLogin = true;
+            if (res.data.certification !== 1) {
+              this.openTip();
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          if (this.isLogin == false) {
+            this.openLoginTip();
+          }
+        });
+    },
+
+    openTip() {
+      this.$alert("您还无法使用该服务，请购买！", "提示", {
+        confirmButtonText: "确定",
+        callback: action => {
+          console.log(action);
+          setTimeout(function() {
+            window.location.href = "/buy";
+          }, 800);
+        }
+      });
+    },
+
+    openLoginTip() {
+      this.$alert("请先登录！", "提示", {
+        confirmButtonText: "确定",
+        callback: action => {
+          console.log(action);
+          setTimeout(function() {
+            window.location.href = "/login";
+          }, 800);
+        }
+      });
+    },
+
     openWindow() {
-      //element-ui的MessageBox组件，点击反馈打开此窗口，输入信息，点击确认即可ajax
       this.$prompt("你有什么想对我说的🐴？", "提示", {
         confirmButtonText: "确认",
         cancelButtonText: "取消",
@@ -43,13 +91,9 @@ export default {
         showClose: false
       })
         .then(({ value }) => {
-          this.$message({
-            type: "success",
-            message: "感谢您的反馈！"
-          });
           if (value) {
-            this.params.info = value;
-            this.submitInfo();
+            this.params.userComment = value;
+            this.submitComment();
           }
         })
         .catch(() => {
@@ -60,17 +104,28 @@ export default {
         });
     },
 
-    submitInfo() {
-      this.$http
-        .post("http://47.240.80.23/server.php", this.params) //利用axios封装的ajax发送请求储存信息到数据库
-        .then(
-          response => {
-            console.log(response);
-          },
-          err => {
-            console.log(err);
+    submitComment() {
+      this.$http({
+        method: "post",
+        url: "/api/comment/add",
+        withCredentials: true,
+        data: this.params
+      })
+        .then(res => {
+          if (res.data.code == 200) {
+            this.$message({
+              type: "success",
+              message: "评论成功！",
+              center: true
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: "评论失败！",
+              center: true
+            });
           }
-        )
+        })
         .catch(error => {
           console.log(error);
         });
